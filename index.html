@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulario</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .block-page {
+            background-color: white;
+            border: 1px solid #ccc;
+            padding: 20px;
+            width: 300px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+        }
+
+        .form-group {
+            margin-bottom: 15px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #555;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 8px;
+            box-sizing: border-box;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        .preview {
+            display: block;
+            margin-top: 10px;
+            max-width: 100%;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+        }
+
+        button {
+            width: 100%;
+            padding: 10px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+
+        @media print {
+            .no-print {
+                display: none;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="block-page">
+        <h1>Formulario de Registro</h1>
+        <form id="registrationForm">
+            <div class="form-group">
+                <label for="photoButton">Foto:</label>
+                <input type="file" id="photo" accept="image/*" style="display:none;" required>
+                <button type="button" id="photoButton" class="no-print">Seleccionar Foto</button>
+                <img id="preview" src="" alt="Vista previa" class="preview">
+            </div>
+            <div class="form-group">
+                <label for="name">Nombre:</label>
+                <input type="text" id="name" required>
+            </div>
+            <div class="form-group">
+                <label for="phone">Teléfono:</label>
+                <input type="text" id="phone" required>
+            </div>
+            <div class="form-group">
+                <label for="id">Cédula:</label>
+                <input type="text" id="id" required>
+            </div>
+            <div class="form-group">
+                <label for="gender">Sexo:</label>
+                <select id="gender" required>
+                    <option value="">Selecciona...</option>
+                    <option value="male">Masculino</option>
+                    <option value="female">Femenino</option>
+                </select>
+            </div>
+            <div class="form-group">
+                <label for="email">Correo:</label>
+                <input type="email" id="email" required>
+            </div>
+            <div class="form-group">
+                <label for="country">País:</label>
+                <select id="country" required>
+                    <option value="">Selecciona...</option>
+                    <option value="mexico">México</option>
+                    <option value="colombia">Colombia</option>
+                    <option value="argentina">Argentina</option>
+                    <!-- Añadir más países según sea necesario -->
+                </select>
+            </div>
+            <button type="button" id="printButton">Imprimir</button>
+        </form>
+    </div>
+    <script>
+        document.getElementById('photoButton').addEventListener('click', function() {
+            document.getElementById('photo').click();
+        });
+
+        document.getElementById('photo').addEventListener('change', function(event) {
+            const file = event.target.files[0];
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    document.getElementById('preview').src = e.target.result;
+                };
+                reader.readAsDataURL(file);
+            }
+        });
+
+        document.getElementById('phone').addEventListener('input', function(event) {
+            event.target.value = event.target.value.replace(/[^0-9]/g, '');
+        });
+
+        document.getElementById('id').addEventListener('input', function(event) {
+            event.target.value = event.target.value.replace(/[^0-9]/g, '');
+        });
+
+        document.getElementById('printButton').addEventListener('click', function() {
+            const form = document.getElementById('registrationForm');
+            if (form.checkValidity()) {
+                window.print();
+            } else {
+                alert("Por favor, llena todos los campos correctamente antes de imprimir.");
+            }
+        });
+    </script>
+</body>
+</html>
